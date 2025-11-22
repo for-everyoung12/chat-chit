@@ -33,7 +33,7 @@ const conversationSchema = new mongoose.Schema({
     },
     lastMessageAt: { type: Date },
     seenBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" },],
-    lastMesssage: {
+    lastMessage: {
         type: lastMessageSchema,
         default: null,
     },
