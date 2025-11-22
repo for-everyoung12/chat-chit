@@ -4,7 +4,7 @@ import axios from "axios";
 const api = axios.create({
   baseURL:
     import.meta.env.MODE === "development"
-      ? "http://localhost:5001/api"
+      ? "https://chat-chit-0o8c.onrender.com/api"
       : "/api",
   withCredentials: true,
 });
