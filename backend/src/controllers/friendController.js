@@ -107,7 +107,7 @@ export const acceptFriendRequest = async (req, res) => {
             },
         });
     } catch (error) {
-        error("Error accepting friend request:", error);
+        console.error("Error accepting friend request:", error);
         return res.status(500).json({ message: "Internal server error" });
     }
 };
@@ -135,7 +135,7 @@ export const declineFriendRequest = async (req, res) => {
 
         return res.status(204).json({ message: "Friend request declined." });
     } catch (error) {
-        error("Error declining friend request:", error);
+        console.error("Error declining friend request:", error);
         return res.status(500).json({ message: "Internal server error" });
     }
 };
@@ -147,7 +147,7 @@ export const getAllFriends = async (req, res) => {
         const friendships = await Friend.find({
             $or: [{ userA: userId }, { userB: userId }],
         })
-            .polulate("userA", "_id displayName avatarUrl")
+            .populate("userA", "_id displayName avatarUrl")
             .populate("userB", "_id displayName avatarUrl")
             .lean();
 
@@ -164,7 +164,7 @@ export const getAllFriends = async (req, res) => {
         return res.status(200).json({ friends });
 
     } catch (error) {
-        error("Error retrieving friends list:", error);
+        console.error("Error retrieving friends list:", error);
         return res.status(500).json({ message: "Internal server error" });
     }
 };
@@ -181,10 +181,10 @@ export const getAllFriendRequests = async (req, res) => {
             FriendRequest.find({ to: userId }).populate('from', populateFields).lean(),
         ])
 
-        res.staatus(200).json({ sent, received });
+        res.status(200).json({ sent, received });
 
     } catch (error) {
-        error("Error retrieving friend requests:", error);
+        console.error("Error retrieving friend requests:", error);
         return res.status(500).json({ message: "Internal server error" });
     }
 };
