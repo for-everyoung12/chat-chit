@@ -179,7 +179,7 @@ export const getAllFriendRequests = async (req, res) => {
         const [sent, received] = await Promise.all([
             FriendRequest.find({ from: userId }).populate('to', populateFields).lean(),
             FriendRequest.find({ to: userId }).populate('from', populateFields).lean(),
-        ])
+        ]);
 
         res.staatus(200).json({ sent, received });
 
