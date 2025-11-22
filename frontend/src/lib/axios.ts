@@ -6,10 +6,7 @@ const apiBaseUrl = import.meta.env.DEV
   : import.meta.env.VITE_API_URL; 
 
 const api = axios.create({
-  baseURL:
-    import.meta.env.MODE === "development"
-      ? "http://localhost:5001/api"
-      : "/api",
+  baseURL: apiBaseUrl,
   withCredentials: true,
 });
 
@@ -39,7 +36,7 @@ api.interceptors.response.use(
 
     originalRequest._retryCount = originalRequest._retryCount || 0;
 
-    if (error.respone?.status === 403 && originalRequest._retryCount < 4) {
+    if (error.response?.status === 403 && originalRequest._retryCount < 4) {
       originalRequest._retryCount += 1;
       try {
         const res = await api.post("/auth/refresh", { withCredentials: true });
@@ -47,7 +44,7 @@ api.interceptors.response.use(
 
         useAuthStore.getState().setAccessToken(newAccessToken);
 
-        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
         return api(originalRequest);
       } catch (refreshError) {
         useAuthStore.getState().clearState();
@@ -56,7 +53,7 @@ api.interceptors.response.use(
     }
 
     return Promise.reject(error);
-
-  });
+  }
+);
 
 export default api;
